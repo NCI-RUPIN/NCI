@@ -1477,6 +1477,12 @@ if (q.type === 'checklist') {
             responses[questionId] = value;
             updateProgress();
         }
+        function handleChecklist(id, checked) {
+  if (checked) responses[id] = 1;
+  else delete responses[id];
+  updateProgress();
+}
+
       
         // 진행률 업데이트
         function updateProgress() {
