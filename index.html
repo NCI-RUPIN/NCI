@@ -1452,7 +1452,8 @@ if (q.type === 'checklist') {
                     <div class="question-item">
                         <div>
                             <span class="question-number">문항 ${q.id}</span>
-                            <span class="question-subarea">${q.subarea}</span>
+                            <span class="question-subarea">${q.subarea || ''}</span>
+
                         </div>
                         <div class="question-text">${q.text}</div>
                         ${optionsHtml}
