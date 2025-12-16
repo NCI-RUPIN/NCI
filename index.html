@@ -1422,13 +1422,17 @@
                // 생리적 비용 체크리스트 (수면/신체화 → 체크박스)
 if (q.type === 'checklist') {
 
-                    const options = [
-                        { value: 0, label: '해당없음' },
-                        { value: 1, label: '전혀<br>없다' },
-                        { value: 2, label: '가끔<br>있다' },
-                        { value: 3, label: '자주<br>있다' },
-                        { value: 4, label: '매우<br>심하다' }
-                    ];
+                   optionsHtml = `
+  <div class="options">
+    <label class="option-label">
+      <input type="checkbox"
+        ${responses[q.id] ? 'checked' : ''}
+        onchange="handleChecklist(${q.id}, this.checked)">
+      <span class="option-button">해당됨</span>
+    </label>
+  </div>
+`;
+
                     
                     optionsHtml = `<div class="options">
                         ${options.map(opt => `
