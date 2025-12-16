@@ -1433,17 +1433,6 @@ if (q.type === 'checklist') {
   </div>
 `;
 
-                    
-                    optionsHtml = `<div class="options">
-                        ${options.map(opt => `
-                            <label class="option-label">
-                                <input type="radio" name="q${q.id}" value="${opt.value}" 
-                                    ${responses[q.id] == opt.value ? 'checked' : ''}
-                                    onchange="saveResponse(${q.id}, ${opt.value})">
-                                <span class="option-button">${opt.label}</span>
-                            </label>
-                        `).join('')}
-                    </div>`;
                 } else {
                     // Part 1-4 문항 (5점 척도)
                     const options = ['전혀<br>그렇지 않다', '그렇지<br>않다', '보통<br>이다', '그렇다', '매우<br>그렇다'];
