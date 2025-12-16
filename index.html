@@ -1420,7 +1420,9 @@
                 let optionsHtml = '';
                 
                 // 생리적 비용 체크리스트 (수면/신체화)
-                if (q.scale === '4점빈도') {
+               // 생리적 비용 체크리스트 (수면/신체화 → 체크박스)
+if (q.type === 'checklist') {
+
                     const options = [
                         { value: 0, label: '해당없음' },
                         { value: 1, label: '전혀<br>없다' },
