@@ -3,1654 +3,403 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NCI 설문조사 - 나를 이해하고 성장시키는 데이터</title>
+    <title>NCI 뇌기반 코칭 진단</title>
     <style>
+        /* [모바일 최적화 스타일] */
         :root {
-            --primary: #2E75B6;
-            --primary-dark: #1a4d79;
-            --accent: #667eea;
-            --accent-dark: #764ba2;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-900: #111827;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html {
-            font-size: 16px;
+            --primary-color: #4A90E2; /* 신뢰감을 주는 블루 */
+            --bg-color: #F8F9FA;
+            --text-color: #333;
+            --card-bg: #ffffff;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-            min-height: 100vh;
-            padding: 1rem;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
             line-height: 1.6;
+            -webkit-tap-highlight-color: transparent; /* 모바일 터치 하이라이트 제거 */
         }
 
         .container {
-            max-width: 56rem;
+            max-width: 600px;
             margin: 0 auto;
-            background: white;
-            border-radius: 1.25rem;
-            box-shadow: 0 1.25rem 3.75rem rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, var(--primary) 0%, #4A90E2 100%);
-            color: white;
-            padding: 2.5rem;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 1.75rem;
-            margin-bottom: 0.625rem;
-            font-weight: 700;
-            line-height: 1.4;
-        }
-
-        .header p {
-            font-size: 0.9375rem;
-            opacity: 0.95;
-        }
-
-        .content-section {
-            padding: 3.125rem 2.5rem;
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        .welcome-icon {
-            font-size: 5rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .welcome-screen h2 {
-            font-size: 1.75rem;
-            color: var(--primary);
-            margin-bottom: 1.5625rem;
-            line-height: 1.5;
-        }
-
-        .description {
-            font-size: 1rem;
-            color: var(--gray-600);
-            line-height: 1.9;
-            margin-bottom: 1.875rem;
-            text-align: left;
-            background: var(--gray-50);
-            padding: 1.5625rem;
-            border-radius: 0.75rem;
-            border-left: 0.25rem solid var(--primary);
-        }
-
-        .time-info {
-            background: #fff3cd;
-            padding: 0.9375rem 1.25rem;
-            border-radius: 0.625rem;
-            color: #856404;
-            font-size: 0.9375rem;
-            font-weight: 600;
-            margin-bottom: 1.875rem;
-        }
-
-        .consent-box {
-            background: var(--gray-50);
-            border: 0.125rem solid var(--gray-200);
-            border-radius: 0.75rem;
-            padding: 1.5625rem;
-            margin-bottom: 1.5625rem;
-            max-height: 25rem;
-            overflow-y: auto;
-        }
-
-        .consent-box h3 {
-            font-size: 1.125rem;
-            color: var(--primary);
-            margin-bottom: 0.9375rem;
-        }
-
-        .consent-box p, .consent-box li {
-            font-size: 0.875rem;
-            color: var(--gray-600);
-            line-height: 1.8;
-            margin-bottom: 0.75rem;
-        }
-
-        .consent-checkbox {
-            background: white;
-            border: 0.125rem solid var(--primary);
-            border-radius: 0.625rem;
-            padding: 1.25rem;
-            margin-bottom: 1.875rem;
-        }
-
-        .consent-checkbox label {
+            padding: 20px;
+            min-height: 100vh;
             display: flex;
-            align-items: center;
-            cursor: pointer;
-            font-size: 1rem;
-            color: var(--gray-900);
-            font-weight: 600;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .consent-checkbox input[type="checkbox"] {
-            width: 1.375rem;
-            height: 1.375rem;
-            margin-right: 0.75rem;
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 1.5625rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.9375rem;
-            color: var(--gray-900);
-            margin-bottom: 0.625rem;
-            font-weight: 600;
-        }
-
-        .required {
-            color: var(--danger);
-            margin-left: 0.25rem;
-        }
-
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="number"],
-        .form-group select {
+        /* 진행바 스타일 */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 0.875rem;
-            border: 0.125rem solid var(--gray-200);
-            border-radius: 0.5rem;
-            font-size: 0.9375rem;
-            transition: border-color 0.3s;
+            height: 6px;
+            background: #eee;
+            z-index: 100;
         }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 1.25rem;
-            flex-wrap: wrap;
-        }
-
-        .radio-group label {
-            display: flex;
-            align-items: center;
-            font-weight: 400;
-            margin-bottom: 0;
-            cursor: pointer;
-        }
-
-        .radio-group input[type="radio"] {
-            width: 1.125rem;
-            height: 1.125rem;
-            margin-right: 0.5rem;
-            cursor: pointer;
-        }
-
-        .progress-section {
-            padding: 1.875rem 2.5rem;
-            background: var(--gray-50);
-            border-bottom: 0.0625rem solid var(--gray-200);
-            display: none;
-        }
-
-        .progress-section.active {
-            display: block;
-        }
-
-        .progress-bar-container {
-            background: var(--gray-200);
-            height: 0.5rem;
-            border-radius: 0.625rem;
-            overflow: hidden;
-            margin-bottom: 0.9375rem;
-        }
-
         .progress-bar {
-            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%);
             height: 100%;
+            background: var(--primary-color);
             width: 0%;
             transition: width 0.3s ease;
         }
 
-        .progress-text {
+        /* 카드 스타일 */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
             text-align: center;
-            color: var(--gray-600);
-            font-size: 0.875rem;
+            transition: all 0.3s ease;
         }
 
-        .section-info {
-            background: #fff3cd;
-            padding: 1.25rem;
-            margin-bottom: 1.875rem;
-            border-radius: 0.625rem;
-            border-left: 0.25rem solid #ffc107;
-        }
-
-        .section-info h3 {
-            color: #856404;
-            margin-bottom: 0.5rem;
-            font-size: 1.125rem;
-        }
-
-        .section-info p {
-            color: #856404;
-            font-size: 0.875rem;
-        }
-
-        .question-item {
-            margin-bottom: 2.5rem;
-            padding-bottom: 1.875rem;
-            border-bottom: 0.0625rem solid var(--gray-200);
-        }
-
-        .question-item:last-child {
-            border-bottom: none;
-        }
-
-        .question-number {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 0.375rem 0.875rem;
-            border-radius: 1.25rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 0.625rem;
-        }
-
-        .question-subarea {
-            display: inline-block;
-            background: #e3f2fd;
-            color: #1976d2;
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.9375rem;
-            font-size: 0.75rem;
-            margin-left: 0.5rem;
-            font-weight: 500;
-        }
-
+        h1 { font-size: 1.6rem; margin-bottom: 10px; color: #1a1a1a; }
+        h2 { font-size: 1.3rem; margin-bottom: 20px; color: #444; }
+        p.desc { font-size: 1rem; color: #666; margin-bottom: 30px; word-break: keep-all; }
+        
+        /* 질문 텍스트 스타일 */
         .question-text {
-            font-size: 1.0625rem;
-            color: var(--gray-900);
-            line-height: 1.7;
-            margin: 0.9375rem 0 1.25rem 0;
-            font-weight: 500;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            word-break: keep-all;
+            line-height: 1.5;
         }
 
+        /* 선택지 버튼 스타일 (모바일 터치 최적화) */
         .options {
             display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .option-label {
-            flex: 1;
-            min-width: 7.5rem;
-            position: relative;
-        }
-
-        .option-label input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-        }
-
-        .option-button {
-            display: block;
-            padding: 0.9375rem 0.625rem;
-            border: 0.125rem solid var(--gray-200);
-            border-radius: 0.625rem;
-            text-align: center;
+        .option-btn {
+            padding: 16px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            background: white;
+            font-size: 1rem;
+            color: #555;
             cursor: pointer;
             transition: all 0.2s;
-            background: white;
-            font-size: 0.875rem;
-            color: var(--gray-600);
-            min-height: 3.5rem;
+            touch-action: manipulation; /* 터치 반응 속도 개선 */
+        }
+
+        .option-btn:active, .option-btn.selected {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            font-weight: bold;
+            transform: scale(0.98);
+        }
+
+        /* 하단 네비게이션 */
+        .nav-buttons {
             display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .option-label input[type="radio"]:checked + .option-button {
-            border-color: var(--primary);
-            background: var(--primary);
-            color: white;
-            font-weight: 600;
-            transform: scale(1.05);
-        }
-
-        .option-button:hover {
-            border-color: var(--primary);
-            transform: translateY(-0.125rem);
-            box-shadow: 0 0.25rem 0.75rem rgba(46, 117, 182, 0.2);
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 0.625rem;
-            font-size: 1.0625rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            min-height: 3.5rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, #4A90E2 100%);
-            color: white;
-            width: 100%;
-            margin-top: 1.25rem;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-0.125rem);
-            box-shadow: 0 0.375rem 1.25rem rgba(46, 117, 182, 0.4);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .navigation {
-            padding: 1.875rem 2.5rem;
-            background: var(--gray-50);
-            display: none;
             justify-content: space-between;
-            align-items: center;
+            margin-top: 20px;
         }
 
-        .navigation.active {
-            display: flex;
-        }
-
-        .btn-secondary {
-            background: white;
-            color: var(--gray-600);
-            border: 0.125rem solid var(--gray-300);
-            padding: 0.875rem 1.875rem;
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .completion-icon {
-            font-size: 5rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .completion-screen h2 {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 0.9375rem;
-        }
-
-        .completion-screen p {
-            font-size: 1.125rem;
-            color: var(--gray-600);
-            line-height: 1.8;
-            margin-bottom: 1.875rem;
-        }
-
-        .download-btn {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: linear-gradient(135deg, var(--primary) 0%, #4A90E2 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 0.625rem;
-            font-size: 1.125rem;
-            font-weight: 600;
-            transition: all 0.3s;
+        .nav-btn {
+            padding: 12px 24px;
             border: none;
+            border-radius: 8px;
+            background: #e9ecef;
+            color: #666;
+            font-size: 1rem;
             cursor: pointer;
         }
-
-        .download-btn:hover {
-            transform: translateY(-0.125rem);
-            box-shadow: 0 0.5rem 1.5625rem rgba(46, 117, 182, 0.4);
+        .nav-btn.primary {
+            background: var(--primary-color);
+            color: white;
+            width: 100%; /* 모바일에서는 꽉 차게 */
         }
 
-        @media (max-width: 48rem) {
-            html {
-                font-size: 14px;
-            }
-
-            body {
-                padding: 0.75rem;
-            }
-
-            .container {
-                border-radius: 1rem;
-            }
-
-            .header {
-                padding: 2rem 1.5rem;
-            }
-
-            .header h1 {
-                font-size: 1.375rem;
-            }
-
-            .content-section {
-                padding: 2rem 1.5rem;
-            }
-
-            .options {
-                flex-direction: column;
-            }
-
-            .option-label {
-                min-width: 100%;
-            }
-
-            .navigation {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .btn-secondary,
-            .btn-primary {
-                width: 100%;
-            }
+        /* 섹션 구분 타이틀 (중간 안내) */
+        .section-intro {
+            text-align: center;
+            padding: 40px 20px;
         }
+        .section-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e3f2fd;
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* 숨김 클래스 */
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-    
 
-       <div class="container">
-        <div class="header">
-            <h1>나를 이해하고 성장시키는 데이터, NCI<br>(Neuro Coaching Insight)</h1>
-            <p>뉴로에이아이시스템(주) NEI 분석 시스템</p>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="container">
+        
+        <div id="intro-screen" class="card">
+            <h1>NCI 뇌기반 코칭 진단</h1>
+            <p class="desc">
+                단순한 성격 검사가 아닙니다.<br>
+                당신의 뇌가 일상에서 에너지를 어떻게 쓰고 있는지<br>
+                <strong>'뇌 에너지 효율'</strong>을 분석합니다.<br><br>
+                총 80문항 / 약 10분 소요
+            </p>
+            <button class="option-btn" style="background:var(--primary-color); color:white; font-weight:bold;" onclick="startSurvey()">
+                내 뇌의 에너지 지도 그리기
+            </button>
         </div>
 
-        <!-- 1. 환영 화면 -->
-        <div class="content-section active" id="welcomeScreen">
-            <div class="welcome-screen" style="text-align: center;">
-                <div class="welcome-icon">🧠</div>
-                <h2>환영합니다!</h2>
-                <div class="description">
-                    열심히 노력하는데 왜 결과만큼 만족스럽지 않을까요? 나의 에너지는 성과를 내는 데 쓰일까요, 걱정하는 데 쓰일까요?<br><br>
-                    진정한 변화(Change)는 막연한 다짐이 아니라, 나를 객관적으로 파악하는 자기 이해(Self-Understanding)에서 시작됩니다.<br><br>
-                    뉴로에이아이시스템(주)가 독자 개발한 <strong>NEI(뇌 효율성 지수) 분석 시스템</strong>은 당신의 에너지가 새나가는 곳을 찾아내고, 당신이 가진 잠재력을 최대로 끌어올릴 맞춤형 코칭 인사이트를 제공합니다.<br><br>
-                    더 나은 나를 만나는 시간, 지금 시작해 보세요.
-                </div>
-                <div class="time-info">
-                    ⏱️ 소요 시간: 약 10-15분
-                </div>
-                <button class="btn btn-primary" onclick="goToConsent()">시작하기</button>
+        <div id="section-screen" class="card hidden">
+            <span class="section-badge" id="section-badge">Part 1</span>
+            <h2 id="section-title">앞쪽 뇌 분석</h2>
+            <p class="desc" id="section-desc">
+                삶을 주도하는 힘과 의도를 살펴봅니다.<br>
+                생각하지 말고 직관적으로 답해주세요.
+            </p>
+            <button class="nav-btn primary" onclick="nextQuestion()">시작하기</button>
+        </div>
+
+        <div id="question-screen" class="card hidden">
+            <div style="margin-bottom:10px; color:#999; font-size:0.9rem;">
+                <span id="q-number">1</span> / 80
+            </div>
+            <div class="question-text" id="q-text">
+                질문 내용이 여기에 표시됩니다.
+            </div>
+
+            <div class="options">
+                <button class="option-btn" onclick="selectOption(1)">전혀 아니다</button>
+                <button class="option-btn" onclick="selectOption(2)">별로 아니다</button>
+                <button class="option-btn" onclick="selectOption(3)">보통이다</button>
+                <button class="option-btn" onclick="selectOption(4)">약간 그렇다</button>
+                <button class="option-btn" onclick="selectOption(5)">매우 그렇다</button>
             </div>
         </div>
 
-        <!-- 2. 개인정보 수집 및 이용 동의 -->
-        <div class="content-section" id="consentScreen">
-            <h2 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1.5625rem; text-align: center;">개인정보 수집 및 이용 동의</h2>
-            
-            <div class="consent-box">
-                <h3>📋 개인정보 수집 항목</h3>
-                <p>뉴로에이아이시스템(주)는 NCI 결과 분석 및 리포트 발송을 위해 아래와 같이 개인정보를 수집합니다.</p>
-                <ul style="margin-left: 1.25rem; margin-bottom: 0.9375rem;">
-                    <li><strong>수집항목:</strong> 이름, 성별, 연령, 직업군, 이메일</li>
-                    <li><strong>수집목적:</strong> NEI 지수 산출, 결과 리포트 발송, 맞춤형 정보 제공</li>
-                    <li><strong>보유기간:</strong> 이용 목적 달성 시까지 (또는 고객 요청 시 파기)</li>
-                </ul>
-                <p style="color: var(--danger); font-weight: 600;">
-                    ⚠️ 귀하는 동의를 거부할 권리가 있으나, 거부 시 결과 리포트 발송이 불가능합니다.
-                </p>
-            </div>
-
-            <div class="consent-checkbox">
-                <label>
-                    <input type="checkbox" id="consentAgree" onchange="updateConsentButton()">
-                    <span>개인정보 수집 및 이용에 동의합니다. (필수)</span>
-                </label>
-            </div>
-
-            <button class="btn btn-primary" id="consentBtn" disabled onclick="goToPersonalInfo()">다음 단계로</button>
+        <div id="finish-screen" class="card hidden">
+            <h2>분석이 완료되었습니다.</h2>
+            <p class="desc">
+                수집된 데이터를 바탕으로<br>
+                당신의 뇌 에너지 패턴을 분석 중입니다.
+            </p>
+            <button class="option-btn" style="background:#333; color:white;" onclick="submitData()">
+                결과 리포트 생성하기
+            </button>
         </div>
 
-        <!-- 3. 개인정보 입력 -->
-        <div class="content-section" id="personalInfoScreen">
-            <h2 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1.5625rem; text-align: center;">개인정보 입력</h2>
-            
-            <form id="personalInfoForm">
-                <div class="form-group">
-                    <label>이름 <span class="required">*</span></label>
-                    <input type="text" id="userName" required placeholder="홍길동">
-                </div>
-
-                <div class="form-group">
-                    <label>성별 <span class="required">*</span></label>
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="gender" value="남성" required>
-                            <span>남성</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="gender" value="여성" required>
-                            <span>여성</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="gender" value="기타" required>
-                            <span>기타</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>나이 <span class="required">*</span></label>
-                    <input type="number" id="userAge" required placeholder="만 나이를 입력하세요" min="10" max="100">
-                </div>
-
-                <div class="form-group">
-                    <label>현재 직업군 <span class="required">*</span></label>
-                    <select id="userJob" required onchange="toggleJobOther()">
-                        <option value="">선택하세요</option>
-                        <option value="학생/취업준비생">학생/취업준비생</option>
-                        <option value="직장인(사무/행정)">직장인(사무/행정)</option>
-                        <option value="직장인(영업/서비스)">직장인(영업/서비스)</option>
-                        <option value="전문직/연구직">전문직/연구직</option>
-                        <option value="사업가/프리랜서">사업가/프리랜서</option>
-                        <option value="예술/창작직">예술/창작직</option>
-                        <option value="주부/전업맘">주부/전업맘</option>
-                        <option value="기타">기타</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="jobOtherGroup" style="display: none;">
-                    <label>직업 상세 입력</label>
-                    <input type="text" id="userJobOther" placeholder="직업을 입력하세요">
-                </div>
-
-                <div class="form-group">
-                    <label>이메일 <span class="required">*</span></label>
-                    <input type="email" id="userEmail" required placeholder="example@email.com">
-                </div>
-
-                <button type="button" class="btn btn-primary" onclick="submitPersonalInfo()">설문 시작하기</button>
-            </form>
-        </div>
-
-        <!-- 진행률 바 -->
-        <div class="progress-section" id="progressSection">
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-            <div class="progress-text" id="progressText">0% 완료 (0/73)</div>
-        </div>
-
-        <!-- 4. 설문 섹션 -->
-        <div class="content-section" id="surveyContent">
-            <div class="section-info" id="sectionInfo"></div>
-            <div class="questions-container" id="questionsContainer"></div>
-        </div>
-
-        <!-- 5. 완료 화면 -->
-        <div class="content-section" id="completionScreen">
-            <div class="completion-screen" style="text-align: center;">
-                <div class="completion-icon">✅</div>
-                <h2>설문이 완료되었습니다!</h2>
-                <p>
-                    총 73문항에 성실히 응답해 주셔서 감사합니다.<br>
-                    귀하의 응답 데이터가 저장되었습니다.
-                </p>
-                <button class="download-btn" onclick="downloadResults()">📥 응답 결과 다운로드 (JSON)</button>
-                <p style="margin-top: 1.875rem; font-size: 0.875rem; color: var(--gray-600);">
-                    뉴로에이아이시스템(주)에서 영업일 기준 3일 이내에<br>
-                    입력하신 이메일로 분석 리포트를 발송해드립니다.
-                </p>
-            </div>
-        </div>
-
-        <!-- 네비게이션 -->
-        <div class="navigation" id="navigation">
-            <button class="btn btn-secondary" id="prevBtn" onclick="previousSection()">◀ 이전</button>
-            <div style="color: var(--gray-600); font-size: 0.875rem;" id="sectionIndicator"></div>
-            <button class="btn btn-primary" id="nextBtn" onclick="nextSection()">다음 ▶</button>
-        </div>
     </div>
 
     <script>
-        // 설문 데이터
+        // [데이터] NCI 80문항 데이터베이스
+        // type: 'func'(기능), 'cost'(비용), 'under'(저하), 'double'(이중해석-우뇌), 'check'(체크리스트)
         const questions = [
-            {
-                        "id": 1,
-                        "area": "앞쪽뇌",
-                        "subarea": "동기&실행",
-                        "text": "아침에 눈을 뜨면 오늘 내가 무엇을 해야 할지, 하루의 큰 그림(목표)이 명확하게 그려진다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 2,
-                        "area": "앞쪽뇌",
-                        "subarea": "동기&실행",
-                        "text": "귀찮거나 하기 싫은 일이라도 \"해야 한다\"고 마음먹으면, 감정을 배제하고 즉시 몸을 움직일 수 있다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 3,
-                        "area": "앞쪽뇌",
-                        "subarea": "동기&실행",
-                        "text": "결정을 내려야 할 때, 우물쭈물하거나 미루기보다 내 기준에 맞춰 빠르게 선택하는 편이다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 4,
-                        "area": "앞쪽뇌",
-                        "subarea": "동기&실행",
-                        "text": "일을 시작하기까지 '예열 시간'이 너무 오래 걸리고, 막상 시작하려면 딴짓을 하게 된다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 5,
-                        "area": "앞쪽뇌",
-                        "subarea": "동기&실행",
-                        "text": "스스로 계획을 짜서 움직이기보다, 남이 시키거나 정해진 틀(매뉴얼)이 있을 때 움직이는 것이 마음 편하다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 6,
-                        "area": "앞쪽뇌",
-                        "subarea": "조절&억제",
-                        "text": "화가 나거나 급한 마음이 들어도, 상황을 봐가며 내 감정의 속도를 조절할 수 있다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 7,
-                        "area": "앞쪽뇌",
-                        "subarea": "조절&억제",
-                        "text": "예상치 못한 문제가 터져도 당황해서 얼어붙기보다, 침착하게 해결책부터 생각한다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 8,
-                        "area": "앞쪽뇌",
-                        "subarea": "조절&억제",
-                        "text": "지금 당장의 즐거움이나 충동적인 욕구보다, 더 중요한 목표를 위해 참는 것이 크게 어렵지 않다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 9,
-                        "area": "앞쪽뇌",
-                        "subarea": "조절&억제",
-                        "text": "겉으로는 참지만 속으로는 끙끙 앓다가, 어느 순간 사소한 일에 갑자기 욱하고 감정이 폭발할 때가 있다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 10,
-                        "area": "앞쪽뇌",
-                        "subarea": "조절&억제",
-                        "text": "기분이 좋으면 열심히 하고 기분이 나쁘면 만사가 귀찮아지는 등, '기분'에 따라 하루의 성과가 크게 달라진다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 11,
-                        "area": "앞쪽뇌",
-                        "subarea": "목표&강박",
-                        "text": "한번 시작한 일은 중간에 흐지부지하지 않고, 어떻게든 끝을 보는(마무리하는) 끈기가 있다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 12,
-                        "area": "앞쪽뇌",
-                        "subarea": "목표&강박",
-                        "text": "여러 가지 일이 동시에 터져도, 무엇이 더 중요하고 급한지 우선순위를 매겨서 순서대로 처리한다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 13,
-                        "area": "앞쪽뇌",
-                        "subarea": "목표&강박",
-                        "text": "결과물이 완벽하지 않으면 남들에게 보여주기가 싫고, 작은 실수에도 스스로를 심하게 자책한다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 14,
-                        "area": "앞쪽뇌",
-                        "subarea": "목표&강박",
-                        "text": "혹시나 실수할까 봐 확인하고 또 확인하느라(Double-check), 정작 중요한 일의 진도가 잘 안 나간다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 15,
-                        "area": "앞쪽뇌",
-                        "subarea": "목표&강박",
-                        "text": "내가 세워둔 계획이나 루틴이 예상치 못한 변수로 틀어지면, 짜증이 확 솟구치고 견디기 힘들다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 16,
-                        "area": "앞쪽뇌",
-                        "subarea": "목표&강박",
-                        "text": "쉴 때조차 \"생산적인 일을 해야 한다\"는 압박감 때문에, 가만히 있으면 죄책감이 든다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 17,
-                        "area": "뒤쪽뇌",
-                        "subarea": "환경민감성",
-                        "text": "여행지나 새로운 장소에 가면, 그곳의 색감, 조명, 공기의 느낌 같은 분위기가 생생하게 와닿는다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 18,
-                        "area": "뒤쪽뇌",
-                        "subarea": "환경민감성",
-                        "text": "미세한 소리나 냄새, 온도 변화 등 남들은 그냥 지나치는 환경의 변화를 본능적으로 빨리 알아챈다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 19,
-                        "area": "뒤쪽뇌",
-                        "subarea": "환경민감성",
-                        "text": "백화점이나 시끄러운 식당처럼 시각/청각 자극이 많은 곳에 있으면, 급격히 기가 빨리고 멍해진다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 20,
-                        "area": "뒤쪽뇌",
-                        "subarea": "환경민감성",
-                        "text": "여행지나 새로운 장소(낯선 환경)에 가면, 바뀐 잠자리나 환경에 적응하느라 남들보다 훨씬 빨리 피곤해진다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 21,
-                        "area": "뒤쪽뇌",
-                        "subarea": "환경민감성",
-                        "text": "내 방이나 책상의 물건 위치가 바뀌거나 정리되지 않은 어수선한 공간에 있으면, 신경이 거슬려 집중을 못 한다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 22,
-                        "area": "뒤쪽뇌",
-                        "subarea": "환경민감성",
-                        "text": "맛있는 것을 먹거나 멋진 풍경을 봐도 \"그냥 그렇네\" 하고 무덤덤할 때가 많다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 23,
-                        "area": "뒤쪽뇌",
-                        "subarea": "추상사고",
-                        "text": "눈을 감으면 소설 속 장면이나 과거의 기억이 영화를 보듯 머릿속에 생생하게 그려진다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 24,
-                        "area": "뒤쪽뇌",
-                        "subarea": "추상사고",
-                        "text": "당장 눈앞의 현실적인 이야기보다, 우주, 철학, 심리 같은 보이지 않는 추상적인 주제를 생각하는 것이 즐겁다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 25,
-                        "area": "뒤쪽뇌",
-                        "subarea": "추상사고",
-                        "text": "멍하니 있을 때, 뇌가 멈춰 있는 게 아니라 꼬리에 꼬리를 무는 상상이나 생각의 여행을 즐기는 편이다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 26,
-                        "area": "뒤쪽뇌",
-                        "subarea": "추상사고",
-                        "text": "원하지 않는데도 과거의 후회되는 장면이나 걱정스러운 미래가 영상처럼 계속 떠올라 괴롭다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 27,
-                        "area": "뒤쪽뇌",
-                        "subarea": "추상사고",
-                        "text": "\"머릿속으로 상상해 보세요\"라는 요청을 받으면, 이미지가 잘 안 떠오르고 막막하다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 28,
-                        "area": "뒤쪽뇌",
-                        "subarea": "글쓰기&통합",
-                        "text": "복잡한 감정이나 생각은 말로 할 때보다 '글'로 정리할 때 훨씬 깊고 명확하게 표현된다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 29,
-                        "area": "뒤쪽뇌",
-                        "subarea": "글쓰기&통합",
-                        "text": "책이나 영화를 볼 때 줄거리(Fact)보다는 그 안에 담긴 의미나 상징, 숨은 메시지를 파악하는 것을 좋아한다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 30,
-                        "area": "뒤쪽뇌",
-                        "subarea": "글쓰기&통합",
-                        "text": "파편화된 정보들을 모아서 나만의 관점으로 새롭게 연결하거나 정리하는 것을 잘한다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 31,
-                        "area": "뒤쪽뇌",
-                        "subarea": "글쓰기&통합",
-                        "text": "내 안에서 뭔가 느껴지는 건 많은데, 적절한 단어나 문장으로 표현하기가 너무 어렵고 답답하다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 32,
-                        "area": "뒤쪽뇌",
-                        "subarea": "글쓰기&통합",
-                        "text": "긴 글을 읽거나 깊이 생각해야 하는 컨텐츠를 접하면, 머리에 잘 들어오지 않고 금방 피로해진다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 33,
-                        "area": "우뇌",
-                        "subarea": "사회적레이더",
-                        "text": "상대방이 말로 표현하지 않아도, 미세한 표정 변화나 목소리 톤만 보고도 기분(숨은 의도)을 본능적으로 알아챈다.",
-                        "type": "이중해석",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 34,
-                        "area": "우뇌",
-                        "subarea": "사회적레이더",
-                        "text": "여러 사람이 모인 자리에 가면, 누가 누구를 불편해하고 어떤 기류가 흐르는지 '공기의 흐름'을 단번에 느낀다.",
-                        "type": "이중해석",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 35,
-                        "area": "우뇌",
-                        "subarea": "사회적레이더",
-                        "text": "대화할 때 \"말의 내용(Fact)\"보다 상대가 풍기는 \"느낌(Vibe)\"이나 뉘앙스를 더 신뢰하는 편이다.",
-                        "type": "이중해석",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 36,
-                        "area": "우뇌",
-                        "subarea": "사회적레이더",
-                        "text": "상대방의 사소한 행동이나 말투가 변하면 \"내가 혹시 실수했나?\" 하고 자기 검열을 하게 된다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 37,
-                        "area": "우뇌",
-                        "subarea": "사회적레이더",
-                        "text": "거절을 하거나 싫은 소리를 해야 할 상황이 오면, 상대가 받을 상처가 미리 상상되어 말이 입 밖으로 잘 안 나온다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 38,
-                        "area": "우뇌",
-                        "subarea": "사회적레이더",
-                        "text": "사람들이 \"눈치가 없다\"거나 \"분위기 파악을 못한다\"는 농담을 할 때가 종종 있다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 39,
-                        "area": "우뇌",
-                        "subarea": "감정전염",
-                        "text": "슬픈 영화를 보거나 힘든 사람의 이야기를 들으면, 마치 내 일처럼 깊이 이입되어 눈물이 난다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 40,
-                        "area": "우뇌",
-                        "subarea": "감정전염",
-                        "text": "논리적으로 설명되지 않아도, 사람이나 사물과 보이지 않는 끈으로 '연결되어 있다'는 느낌을 받을 때가 있다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 41,
-                        "area": "우뇌",
-                        "subarea": "감정전염",
-                        "text": "감정 기복이 심한 사람이나 우울한 사람과 함께 있으면, 내 기분까지 덩달아 휘둘려(전염되어) 하루 종일 힘들다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 42,
-                        "area": "우뇌",
-                        "subarea": "감정전염",
-                        "text": "타인의 감정을 너무 많이 흡수해서, 혼자 있을 때도 마치 남의 감정이 내 안에 남아있는 것처럼 무겁다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 43,
-                        "area": "우뇌",
-                        "subarea": "감정전염",
-                        "text": "누군가 힘든 이야기를 해도 \"그래서 해결책이 뭐야?\"라는 생각부터 들고, 마음으로 위로하기가 어색하다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 44,
-                        "area": "우뇌",
-                        "subarea": "직관&맥락",
-                        "text": "어떤 문제를 해결할 때, 하나씩 분석하기보다 \"아, 이거구나!\" 하고 전체적인 그림이 한 번에 그려질 때가 많다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 45,
-                        "area": "우뇌",
-                        "subarea": "직관&맥락",
-                        "text": "서로 전혀 관련 없어 보이는 두 가지 사실을 연결해서 새로운 아이디어나 의미를 찾아내는 것을 잘한다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 46,
-                        "area": "우뇌",
-                        "subarea": "직관&맥락",
-                        "text": "딱딱한 설명서나 매뉴얼보다는, 은유나 비유(그림, 예시)로 설명해 줄 때 훨씬 이해가 빠르다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 47,
-                        "area": "우뇌",
-                        "subarea": "직관&맥락",
-                        "text": "뚜렷한 근거는 없는데 \"뭔가 불길한 느낌\"이 들면, 그 느낌이 계속 나를 괴롭혀서 일을 진행하기 어렵다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 48,
-                        "area": "우뇌",
-                        "subarea": "직관&맥락",
-                        "text": "\"대충 이런 느낌으로 해줘\" 같은 애매한 지시를 받으면, 도대체 뭘 해야 할지 몰라 답답하고 화가 난다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 49,
-                        "area": "좌뇌",
-                        "subarea": "루틴&체계",
-                        "text": "복잡하고 어지러운 문제도 순서대로 목록(List)을 만들거나 정리하면 마음이 차분해지고 해결책이 보인다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 50,
-                        "area": "좌뇌",
-                        "subarea": "루틴&체계",
-                        "text": "즉흥적으로 행동하기보다, 정해진 절차와 매뉴얼을 따를 때 실수가 없고 효율적이라고 느낀다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 51,
-                        "area": "좌뇌",
-                        "subarea": "루틴&체계",
-                        "text": "매일 반복되는 일상(루틴)이 지루하기보다, 안전하고 편안하다고 느낀다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 52,
-                        "area": "좌뇌",
-                        "subarea": "루틴&체계",
-                        "text": "갑작스러운 약속 변경이나 내 계획에 없던 돌발 상황이 생기면, 스트레스를 심하게 받고 화가 난다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 53,
-                        "area": "좌뇌",
-                        "subarea": "루틴&체계",
-                        "text": "물건을 어디에 뒀는지 자주 잊어버리고, 정리 정돈이 안 되어 늘 주변이 어수선하다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 54,
-                        "area": "좌뇌",
-                        "subarea": "논리&인과",
-                        "text": "누군가를 설득할 때 감정에 호소하기보다, 객관적인 근거와 데이터를 제시하는 것이 훨씬 편하다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 55,
-                        "area": "좌뇌",
-                        "subarea": "논리&인과",
-                        "text": "어떤 현상을 볼 때 \"왜?\"라는 질문을 던지고, 납득할 만한 원인과 결과(인과관계)를 파악해야 직성이 풀린다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 56,
-                        "area": "좌뇌",
-                        "subarea": "논리&인과",
-                        "text": "감정적으로 흥분된 상황에서도, 사실 관계(Fact)를 따져가며 차분하게 시시비비를 가릴 수 있다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 57,
-                        "area": "좌뇌",
-                        "subarea": "논리&인과",
-                        "text": "타인이 감정적인 위로를 원할 때조차, 나도 모르게 해결책을 분석하거나 잘잘못을 따져서 상대에게 상처를 주곤 한다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 58,
-                        "area": "좌뇌",
-                        "subarea": "논리&인과",
-                        "text": "논리적으로 설명되지 않는 일이나, 근거 없는 '감'으로 일하는 사람을 보면 답답해서 견딜 수가 없다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 59,
-                        "area": "좌뇌",
-                        "subarea": "논리&인과",
-                        "text": "말을 할 때 두서가 없고, 내가 무슨 말을 하려는지 논리적으로 요약해서 전달하기가 어렵다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 60,
-                        "area": "좌뇌",
-                        "subarea": "현실&세부",
-                        "text": "뜬구름 잡는 미래의 비전보다, 당장 내 손에 잡히는 구체적인 이익과 현실적인 결과가 더 중요하다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 61,
-                        "area": "좌뇌",
-                        "subarea": "현실&세부",
-                        "text": "전체적인 분위기만 보는 게 아니라, 날짜, 숫자, 오타 같은 세부적인 정보(Detail)를 정확하게 기억하고 잡아낸다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 62,
-                        "area": "좌뇌",
-                        "subarea": "현실&세부",
-                        "text": "\"만약에\"라는 상상보다는 \"그래서 지금 당장 뭘 해야 하지?\"라는 현실적인 질문에 집중한다.",
-                        "type": "기능",
-                        "direction": "정방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 63,
-                        "area": "좌뇌",
-                        "subarea": "현실&세부",
-                        "text": "확실한 답이 없는 모호한(Ambiguous) 상황을 견디기 힘들어, 빨리 결론을 내리고 싶어 조급해진다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 64,
-                        "area": "좌뇌",
-                        "subarea": "현실&세부",
-                        "text": "계산 실수가 잦거나, 약속 시간이나 날짜 같은 숫자 정보를 자주 착각해서 곤란을 겪는다.",
-                        "type": "저하",
-                        "direction": "역방향",
-                        "scale": "5점"
-            },
-            {
-                        "id": 65,
-                        "area": "수면회복",
-                        "subarea": "수면회복",
-                        "text": "잠자리에 누우면 생각이 꼬리를 물거나 신경이 예민해져서 20분 안에 잠들기 힘들다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "4점빈도"
-            },
-            {
-                        "id": 66,
-                        "area": "수면회복",
-                        "subarea": "수면회복",
-                        "text": "자다가 작은 소리에도 자주 깨거나, 한 번 깨면 다시 잠들기 어렵다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "4점빈도"
-            },
-            {
-                        "id": 67,
-                        "area": "수면회복",
-                        "subarea": "수면회복",
-                        "text": "꿈을 너무 많이 꾸거나(악몽, 다몽), 자고 일어나도 밤새 일을 한 것처럼 몸이 무겁다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "4점빈도"
-            },
-            {
-                        "id": 68,
-                        "area": "수면회복",
-                        "subarea": "수면회복",
-                        "text": "낮 시간에 머리가 멍하거나(Brain Fog), 커피 없이는 집중하기 힘들 정도로 졸음이 쏟아진다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "4점빈도"
-            },
-            {
-                        "id": 69,
-                        "area": "신체화",
-                        "subarea": "신체화",
-                        "text": "쉬고 있을 때도 나도 모르게 어깨, 목, 턱에 힘이 잔뜩 들어가 있거나 통증이 있다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "4점빈도"
-            },
-            {
-                        "id": 70,
-                        "area": "신체화",
-                        "subarea": "신체화",
-                        "text": "스트레스를 받으면 바로 소화가 안 되거나, 복통/설사 등 위장 장애가 생긴다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "4점빈도"
-            },
-            {
-                        "id": 71,
-                        "area": "신체화",
-                        "subarea": "신체화",
-                        "text": "특별한 이유 없이 가슴이 답답하거나 두근거리고, 호흡이 얕아지는 느낌이 든다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "4점빈도"
-            },
-            {
-                        "id": 72,
-                        "area": "신체화",
-                        "subarea": "신체화",
-                        "text": "머리가 지끈거리는 두통이 잦거나, 갑자기 핑 도는 듯한 어지럼증을 느낀다.",
-                        "type": "비용",
-                        "direction": "역방향",
-                        "scale": "4점빈도"
-            },
-            {
-                        "id": 73,
-                        "area": "뒤쪽뇌",
-                        "subarea": "환경민감성",
-                        "text": "조그만 소리나 가벼운 접촉에도 쉽게 놀라는 편이다.",
-                        "type": "이중해석",
-                        "direction": "정방향",
-                        "scale": "5점"
-            }
-];
+            // --- Part 1. 앞쪽 뇌 (1~16) ---
+            { section: "앞쪽 뇌: 의도와 통제", text: "아침에 눈을 뜨면 오늘 내가 무엇을 해야 할지, 하루의 큰 그림(목표)이 명확하게 그려진다.", area: "front", type: "func" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "귀찮거나 하기 싫은 일이라도 해야 한다고 마음먹으면, 감정을 배제하고 즉시 몸을 움직일 수 있다.", area: "front", type: "func" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "결정을 내려야 할 때, 우물쭈물하거나 미루기보다 내 기준에 맞춰 빠르게 선택하는 편이다.", area: "front", type: "func" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "화가 나거나 급한 마음이 들어도, 상황을 봐가며 내 감정의 속도를 조절할 수 있다.", area: "front", type: "func" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "예상치 못한 문제가 터져도 당황해서 얼어붙기보다, 침착하게 해결책부터 생각한다.", area: "front", type: "func" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "지금 당장의 즐거움이나 충동적인 욕구보다, 더 중요한 목표를 위해 참는 것이 크게 어렵지 않다.", area: "front", type: "func" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "한번 시작한 일은 중간에 흐지부지하지 않고, 어떻게든 끝을 보는(마무리하는) 끈기가 있다.", area: "front", type: "func" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "여러 가지 일이 동시에 터져도, 무엇이 더 중요하고 급한지 우선순위를 매겨서 순서대로 처리한다.", area: "front", type: "func" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "겉으로는 참지만 속으로는 끙끙 앓다가, 어느 순간 사소한 일에 갑자기 욱하고 감정이 폭발할 때가 있다.", area: "front", type: "cost" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "결과물이 완벽하지 않으면 남들에게 보여주기가 싫고, 작은 실수에도 스스로를 심하게 자책한다.", area: "front", type: "cost" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "혹시나 실수할까 봐 확인하고 또 확인하느라(Double-check), 정작 중요한 일의 진도가 잘 안 나간다.", area: "front", type: "cost" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "내가 세워둔 계획이나 루틴이 예상치 못한 변수로 틀어지면, 짜증이 확 솟구치고 견디기 힘들다.", area: "front", type: "cost" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "쉴 때조차 '생산적인 일을 해야 한다'는 압박감 때문에, 가만히 있으면 죄책감이 든다.", area: "front", type: "cost" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "일을 시작하기까지 '예열 시간'이 너무 오래 걸리고, 막상 시작하려면 딴짓을 하게 된다.", area: "front", type: "under" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "스스로 계획을 짜서 움직이기보다, 남이 시키거나 정해진 틀(매뉴얼)이 있을 때 움직이는 것이 마음 편하다.", area: "front", type: "under" },
+            { section: "앞쪽 뇌: 의도와 통제", text: "기분이 좋으면 열심히 하고 기분이 나쁘면 만사가 귀찮아지는 등, '기분'에 따라 하루의 성과가 크게 달라진다.", area: "front", type: "under" },
 
-        // 개인정보
-        let personalInfo = {};
+            // --- Part 2. 뒤쪽 뇌 (17~32) ---
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "여행지나 새로운 장소에 가면, 그곳의 색감, 조명, 공기의 느낌 같은 분위기가 생생하게 와닿는다.", area: "back", type: "func" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "미세한 소리나 냄새, 온도 변화 등 남들은 그냥 지나치는 환경의 변화를 본능적으로 빨리 알아챈다.", area: "back", type: "func" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "눈을 감으면 소설 속 장면이나 과거의 기억이 영화를 보듯 머릿속에 생생하게 그려진다.", area: "back", type: "func" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "당장 눈앞의 현실적인 이야기보다, 우주, 철학, 심리 같은 보이지 않는 추상적인 주제를 생각하는 것이 즐겁다.", area: "back", type: "func" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "멍하니 있을 때, 뇌가 멈춰 있는 게 아니라 꼬리에 꼬리를 무는 상상이나 생각의 여행을 즐기는 편이다.", area: "back", type: "func" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "복잡한 감정이나 생각은 말로 할 때보다 '글'로 정리할 때 훨씬 깊고 명확하게 표현된다.", area: "back", type: "func" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "책이나 영화를 볼 때 줄거리(Fact)보다는 그 안에 담긴 의미나 상징, 숨은 메시지를 파악하는 것을 좋아한다.", area: "back", type: "func" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "파편화된 정보들을 모아서 나만의 관점으로 새롭게 연결하거나 정리하는 것을 잘한다.", area: "back", type: "func" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "여행지나 낯선 장소에 가면, 바뀐 잠자리나 환경에 적응하느라 남들보다 훨씬 빨리 피곤해진다.", area: "back", type: "cost" }, // 수정된 낯선환경
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "백화점이나 시끄러운 식당처럼 시각/청각 자극이 많은 곳에 있으면, 급격히 기가 빨리고 멍해진다.", area: "back", type: "cost" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "내 방이나 책상의 물건 위치가 바뀌거나 정리되지 않은 어수선한 공간에 있으면, 신경이 거슬려 집중을 못 한다.", area: "back", type: "cost" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "눈을 감고 쉬려고 해도, 원하지 않는 이미지나 잔상들이 머릿속에 계속 떠다녀서 뇌가 쉬지 못한다.", area: "back", type: "cost" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "빛이나 소리에 너무 민감해서, 완벽하게 깜깜하고 조용하지 않으면 깊이 잠들기가 힘들다.", area: "back", type: "cost" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "맛있는 것을 먹거나 멋진 풍경을 봐도 '그냥 그렇네' 하고 무덤덤할 때가 많다.", area: "back", type: "under" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "내 안에서 뭔가 느껴지는 건 많은데, 적절한 단어나 문장으로 표현하기가 너무 어렵고 답답하다.", area: "back", type: "under" },
+            { section: "뒤쪽 뇌: 감각과 깊이", text: "긴 글을 읽거나 깊이 생각해야 하는 컨텐츠를 접하면, 머리에 잘 들어오지 않고 금방 피로해진다.", area: "back", type: "under" },
 
-        // 섹션 구성
-        const sections = [
-            { 
-                name: '앞쪽 뇌 (의도와 통제)', 
-                desc: '당신의 실행력, 조절 능력, 목표 지향성을 측정합니다.',
-                questions: questions.filter(q => q.area === '앞쪽뇌')
-            },
-            { 
-                name: '뒤쪽 뇌 (감각과 깊이)', 
-                desc: '외부 자극에 대한 민감도와 통찰 능력을 측정합니다.',
-                questions: questions.filter(q => q.area === '뒤쪽뇌')
-            },
-            { 
-                name: '우뇌 (직관과 연결)', 
-                desc: '사회적 감수성, 공감 능력, 직관을 측정합니다.',
-                questions: questions.filter(q => q.area === '우뇌')
-            },
-            { 
-                name: '좌뇌 (구조와 현실)', 
-                desc: '논리적 사고, 체계성, 현실 감각을 측정합니다.',
-                questions: questions.filter(q => q.area === '좌뇌')
-            },
-            { 
-                name: '생리적 비용 체크리스트', 
-                desc: '수면의 질과 신체화 반응을 측정합니다.',
-                questions: questions.filter(q => q.area === '수면회복' || q.area === '신체화')
-            }
+            // --- Part 3. 우뇌 (33~48) ★ 이중해석 영역 ---
+            { section: "우뇌: 직관과 연결", text: "상대방이 말로 표현하지 않아도, 미세한 표정 변화나 목소리 톤만 보고도 기분(숨은 의도)을 본능적으로 알아챈다.", area: "right", type: "double" }, // 이중
+            { section: "우뇌: 직관과 연결", text: "여러 사람이 모인 자리에 가면, 누가 누구를 불편해하고 어떤 기류가 흐르는지 '공기의 흐름'을 단번에 느낀다.", area: "right", type: "double" }, // 이중
+            { section: "우뇌: 직관과 연결", text: "대화할 때 '말의 내용'보다 상대가 풍기는 '느낌'이나 뉘앙스를 더 신뢰하는 편이다.", area: "right", type: "double" }, // 이중
+            { section: "우뇌: 직관과 연결", text: "슬픈 영화를 보거나 힘든 사람의 이야기를 들으면, 마치 내 일처럼 깊이 이입되어 눈물이 난다.", area: "right", type: "func" },
+            { section: "우뇌: 직관과 연결", text: "논리적으로 설명되지 않아도, 사람이나 사물과 보이지 않는 끈으로 '연결되어 있다'는 느낌을 받을 때가 있다.", area: "right", type: "func" },
+            { section: "우뇌: 직관과 연결", text: "어떤 문제를 해결할 때, 하나씩 분석하기보다 '아, 이거구나!' 하고 전체적인 그림이 한 번에 그려질 때가 많다.", area: "right", type: "func" },
+            { section: "우뇌: 직관과 연결", text: "서로 전혀 관련 없어 보이는 두 가지 사실을 연결해서 새로운 아이디어나 의미를 찾아내는 것을 잘한다.", area: "right", type: "func" },
+            { section: "우뇌: 직관과 연결", text: "딱딱한 설명서나 매뉴얼보다는, 은유나 비유(그림, 예시)로 설명해 줄 때 훨씬 이해가 빠르다.", area: "right", type: "func" },
+            { section: "우뇌: 직관과 연결", text: "머릿속에서 지우고 싶은 과거의 실수나 상처받은 기억이 불쑥불쑥 떠올라 현재의 기분을 망칠 때가 많다.", area: "right", type: "cost" }, // 수정된 부정적반추
+            { section: "우뇌: 직관과 연결", text: "낯선 사람을 만나거나 익숙하지 않은 모임에 가면, 나도 모르게 긴장하고 경계하는 마음부터 생긴다.", area: "right", type: "cost" }, // 수정된 방어
+            { section: "우뇌: 직관과 연결", text: "상황이 명확하지 않을 때, 긍정적인 가능성보다는 '혹시 속고 있는 건 아닐까?' 하는 의심이 먼저 든다.", area: "right", type: "cost" }, // 수정된 의심
+            { section: "우뇌: 직관과 연결", text: "몸에 작은 통증만 느껴져도 '큰 병이 아닐까?' 하는 걱정에 사로잡혀서, 안심이 될 때까지 검색을 멈출 수 없다.", area: "right", type: "cost" }, // 수정된 건강염려
+            { section: "우뇌: 직관과 연결", text: "한번 걱정이 시작되면, 꼬리에 꼬리를 물고 최악의 상황으로 시나리오가 흘러가서 멈추기가 힘들다.", area: "right", type: "cost" }, // 수정된 부정편향
+            { section: "우뇌: 직관과 연결", text: "사람들이 '눈치가 없다'거나 '분위기 파악을 못한다'는 농담을 할 때가 종종 있다.", area: "right", type: "under" },
+            { section: "우뇌: 직관과 연결", text: "누군가 힘든 이야기를 해도 '그래서 해결책이 뭐야?'라는 생각부터 들고, 마음으로 위로하기가 어색하다.", area: "right", type: "under" },
+            { section: "우뇌: 직관과 연결", text: "'대충 이런 느낌으로 해줘' 같은 애매한 지시를 받으면, 도대체 뭘 해야 할지 몰라 답답하고 화가 난다.", area: "right", type: "under" },
+
+            // --- Part 4. 좌뇌 (49~64) ---
+            { section: "좌뇌: 구조와 현실", text: "복잡하고 어지러운 문제도 순서대로 목록(List)을 만들거나 정리하면 마음이 차분해지고 해결책이 보인다.", area: "left", type: "func" },
+            { section: "좌뇌: 구조와 현실", text: "즉흥적으로 행동하기보다, 정해진 절차와 매뉴얼을 따를 때 실수가 없고 효율적이라고 느낀다.", area: "left", type: "func" },
+            { section: "좌뇌: 구조와 현실", text: "매일 반복되는 일상(루틴)이 지루하기보다, 안전하고 편안하다고 느낀다.", area: "left", type: "func" },
+            { section: "좌뇌: 구조와 현실", text: "누군가를 설득할 때 감정에 호소하기보다, 객관적인 근거와 데이터를 제시하는 것이 훨씬 편하다.", area: "left", type: "func" },
+            { section: "좌뇌: 구조와 현실", text: "어떤 현상을 볼 때 '왜?'라는 질문을 던지고, 납득할 만한 원인과 결과를 파악해야 직성이 풀린다.", area: "left", type: "func" },
+            { section: "좌뇌: 구조와 현실", text: "감정적으로 흥분된 상황에서도, 사실 관계(Fact)를 따져가며 차분하게 시시비비를 가릴 수 있다.", area: "left", type: "func" },
+            { section: "좌뇌: 구조와 현실", text: "뜬구름 잡는 미래의 비전보다, 당장 내 손에 잡히는 구체적인 이익과 현실적인 결과가 더 중요하다.", area: "left", type: "func" },
+            { section: "좌뇌: 구조와 현실", text: "전체적인 분위기만 보는 게 아니라, 날짜, 숫자, 오타 같은 세부적인 정보(Detail)를 정확하게 기억하고 잡아낸다.", area: "left", type: "func" },
+            { section: "좌뇌: 구조와 현실", text: "'만약에'라는 상상보다는 '그래서 지금 당장 뭘 해야 하지?'라는 현실적인 질문에 집중한다.", area: "left", type: "func" },
+            { section: "좌뇌: 구조와 현실", text: "갑작스러운 약속 변경이나 내 계획에 없던 돌발 상황이 생기면, 스트레스를 심하게 받고 화가 난다.", area: "left", type: "cost" },
+            { section: "좌뇌: 구조와 현실", text: "타인이 감정적인 위로를 원할 때조차, 나도 모르게 해결책을 분석하거나 잘잘못을 따져서 상대에게 상처를 주곤 한다.", area: "left", type: "cost" },
+            { section: "좌뇌: 구조와 현실", text: "논리적으로 설명되지 않는 일이나, 근거 없는 '감'으로 일하는 사람을 보면 답답해서 견딜 수가 없다.", area: "left", type: "cost" },
+            { section: "좌뇌: 구조와 현실", text: "확실한 답이 없는 모호한 상황을 견디기 힘들어, 빨리 결론을 내리고 싶어 조급해진다.", area: "left", type: "cost" },
+            { section: "좌뇌: 구조와 현실", text: "물건을 어디에 뒀는지 자주 잊어버리고, 정리 정돈이 안 되어 늘 주변이 어수선하다.", area: "left", type: "under" },
+            { section: "좌뇌: 구조와 현실", text: "말을 할 때 두서가 없고, 내가 무슨 말을 하려는지 논리적으로 요약해서 전달하기가 어렵다.", area: "left", type: "under" },
+            { section: "좌뇌: 구조와 현실", text: "계산 실수가 잦거나, 약속 시간이나 날짜 같은 숫자 정보를 자주 착각해서 곤란을 겪는다.", area: "left", type: "under" },
+
+            // --- Part 5. 뇌 피로 체크리스트 (65~72) ---
+            // ※ 여기는 5점 척도가 아니라 빈도 체크지만, 편의상 UI 통일을 위해 5점 척도로 받되 1~5점 점수 가중치를 다르게 해석합니다.
+            { section: "체크리스트: 수면 회복", text: "잠자리에 누우면 생각이 꼬리를 물거나 예민해져서 20분 안에 잠들기 힘들다.", area: "sleep", type: "check" },
+            { section: "체크리스트: 수면 회복", text: "자다가 작은 소리에도 자주 깨거나, 한 번 깨면 다시 잠들기 어렵다.", area: "sleep", type: "check" },
+            { section: "체크리스트: 수면 회복", text: "꿈을 너무 많이 꾸거나(악몽, 다몽), 자고 일어나도 밤새 일을 한 것처럼 몸이 무겁다.", area: "sleep", type: "check" },
+            { section: "체크리스트: 수면 회복", text: "낮 시간에 머리가 멍하거나, 커피 없이는 집중하기 힘들 정도로 졸음이 쏟아진다.", area: "sleep", type: "check" },
+            { section: "체크리스트: 신체 반응", text: "쉬고 있을 때도 나도 모르게 어깨, 목, 턱에 힘이 잔뜩 들어가 있거나 통증이 있다.", area: "body", type: "check" },
+            { section: "체크리스트: 신체 반응", text: "스트레스를 받으면 바로 소화가 안 되거나, 복통/설사 등 위장 장애가 생긴다.", area: "body", type: "check" },
+            { section: "체크리스트: 신체 반응", text: "특별한 이유 없이 가슴이 답답하거나 두근거리고, 호흡이 얕아지는 느낌이 든다.", area: "body", type: "check" },
+            { section: "체크리스트: 신체 반응", text: "머리가 지끈거리는 두통이 잦거나, 갑자기 핑 도는 듯한 어지럼증을 느낀다.", area: "body", type: "check" }
         ];
 
-        let currentSection = 0;
-        let responses = {};
+        // 상태 변수
+        let currentIdx = 0;
+        let answers = []; // 사용자 응답 저장
 
-        // 환영 화면 → 동의 화면
-        function goToConsent() {
-            document.getElementById('welcomeScreen').classList.remove('active');
-            document.getElementById('consentScreen').classList.add('active');
+        // DOM 요소
+        const introScreen = document.getElementById('intro-screen');
+        const sectionScreen = document.getElementById('section-screen');
+        const questionScreen = document.getElementById('question-screen');
+        const finishScreen = document.getElementById('finish-screen');
+        
+        const sectionBadge = document.getElementById('section-badge');
+        const sectionTitle = document.getElementById('section-title');
+        const sectionDesc = document.getElementById('section-desc');
+        
+        const qNumber = document.getElementById('q-number');
+        const qText = document.getElementById('q-text');
+        const progressBar = document.getElementById('progressBar');
+
+        // [기능] 설문 시작
+        function startSurvey() {
+            introScreen.classList.add('hidden');
+            showSectionIntro();
         }
 
-        // 동의 체크박스 상태 변경
-        function updateConsentButton() {
-            const checked = document.getElementById('consentAgree').checked;
-            document.getElementById('consentBtn').disabled = !checked;
-        }
-
-        // 동의 화면 → 개인정보 입력 화면
-        function goToPersonalInfo() {
-            document.getElementById('consentScreen').classList.remove('active');
-            document.getElementById('personalInfoScreen').classList.add('active');
-        }
-
-        // 직업 기타 선택 시
-        function toggleJobOther() {
-            const job = document.getElementById('userJob').value;
-            const otherGroup = document.getElementById('jobOtherGroup');
-            if (job === '기타') {
-                otherGroup.style.display = 'block';
-            } else {
-                otherGroup.style.display = 'none';
-            }
-        }
-
-        // 개인정보 제출
-        function submitPersonalInfo() {
-            const name = document.getElementById('userName').value.trim();
-            const gender = document.querySelector('input[name="gender"]:checked');
-            const age = document.getElementById('userAge').value;
-            const job = document.getElementById('userJob').value;
-            const email = document.getElementById('userEmail').value.trim();
-            const jobOther = document.getElementById('userJobOther').value.trim();
-
-            if (!name || !gender || !age || !job || !email) {
-                alert('모든 필수 항목을 입력해주세요.');
+        // [기능] 섹션 인트로 표시 (구역이 바뀔 때마다)
+        function showSectionIntro() {
+            const currentQ = questions[currentIdx];
+            
+            // 만약 이전 질문과 섹션이 같다면 건너뜀 (첫 질문 제외)
+            if (currentIdx > 0 && questions[currentIdx-1].section === currentQ.section) {
+                renderQuestion();
                 return;
             }
 
-            if (job === '기타' && !jobOther) {
-                alert('직업을 입력해주세요.');
-                return;
-            }
+            // 섹션 정보 업데이트
+            sectionBadge.innerText = "Part " + (Math.floor(currentIdx / 16) + 1);
+            if(currentIdx >= 64) sectionBadge.innerText = "Checklist";
 
-            personalInfo = {
-                name: name,
-                gender: gender.value,
-                age: parseInt(age),
-                job: job === '기타' ? jobOther : job,
-                email: email,
-                timestamp: new Date().toISOString()
-            };
-
-            // 개인정보 입력 화면 → 설문 화면
-            document.getElementById('personalInfoScreen').classList.remove('active');
-            document.getElementById('surveyContent').classList.add('active');
-            document.getElementById('progressSection').classList.add('active');
-            document.getElementById('navigation').classList.add('active');
+            sectionTitle.innerText = currentQ.section;
+            sectionDesc.innerText = getSectionDescription(currentQ.area);
             
-            renderSection();
+            questionScreen.classList.add('hidden');
+            sectionScreen.classList.remove('hidden');
         }
 
-        // 섹션 렌더링
-        function renderSection() {
-            const section = sections[currentSection];
-            
-            document.getElementById('sectionInfo').innerHTML = `
-                <h3>${section.name}</h3>
-                <p>${section.desc}</p>
-            `;
+        // [기능] 섹션별 설명 문구
+        function getSectionDescription(area) {
+            if(area === 'front') return "당신이 삶을 주도하는 힘과 목표를 향해가는 에너지를 살펴봅니다.";
+            if(area === 'back') return "당신이 세상을 얼마나 깊이 있고 섬세하게 받아들이는지 확인합니다.";
+            if(area === 'right') return "보이지 않는 맥락과 관계를 읽어내는 당신의 직관을 알아봅니다.";
+            if(area === 'left') return "예측 가능한 질서와 현실적인 안정을 추구하는 성향을 봅니다.";
+            return "뇌가 얼마나 지쳐있는지, 몸이 보내는 신호를 확인합니다."; // 체크리스트
+        }
 
-            let html = '';
-            section.questions.forEach(q => {
-                let optionsHtml = '';
-                
-               // 생리적 비용 체크리스트 (수면/신체화 → 체크박스)
-if (q.type === 'checklist') {
+        // [기능] 다음 질문 화면으로 이동
+        function nextQuestion() {
+            sectionScreen.classList.add('hidden');
+            renderQuestion();
+        }
 
-                   optionsHtml = `
-  <div class="options">
-    <label class="option-label">
-      <input type="checkbox"
-        ${responses[q.id] ? 'checked' : ''}
-        onchange="handleChecklist(${q.id}, this.checked)">
-      <span class="option-button">해당됨</span>
-    </label>
-  </div>
-`;
+        // [기능] 질문 렌더링
+        function renderQuestion() {
+            questionScreen.classList.remove('hidden');
+            const q = questions[currentIdx];
 
-                } else {
-                    // Part 1-4 문항 (5점 척도)
-                    const options = ['전혀<br>그렇지 않다', '그렇지<br>않다', '보통<br>이다', '그렇다', '매우<br>그렇다'];
-                    optionsHtml = `<div class="options">
-                        ${options.map((opt, idx) => `
-                            <label class="option-label">
-                                <input type="radio" name="q${q.id}" value="${idx + 1}" 
-                                    ${responses[q.id] == idx + 1 ? 'checked' : ''}
-                                    onchange="saveResponse(${q.id}, ${idx + 1})">
-                                <span class="option-button">${opt}</span>
-                            </label>
-                        `).join('')}
-                    </div>`;
-                }
-                
-                html += `
-                    <div class="question-item">
-                        <div>
-                            <span class="question-number">문항 ${q.id}</span>
-                            <span class="question-subarea">${q.subarea || ''}</span>
+            qNumber.innerText = currentIdx + 1;
+            qText.innerText = q.text;
 
-                        </div>
-                        <div class="question-text">${q.text}</div>
-                        ${optionsHtml}
-                    </div>
-                `;
+            // 진행률 업데이트
+            const progress = ((currentIdx) / questions.length) * 100;
+            progressBar.style.width = progress + "%";
+        }
+
+        // [기능] 옵션 선택 시 처리
+        function selectOption(score) {
+            // 데이터 저장
+            answers.push({
+                idx: currentIdx,
+                area: questions[currentIdx].area,
+                type: questions[currentIdx].type,
+                score: score
             });
 
-            document.getElementById('questionsContainer').innerHTML = html;
-            document.getElementById('sectionIndicator').textContent = 
-                `Part ${currentSection + 1} / ${sections.length}`;
-            document.getElementById('prevBtn').disabled = currentSection === 0;
-            document.getElementById('nextBtn').textContent = 
-                currentSection === sections.length - 1 ? '완료' : '다음 ▶';
+            currentIdx++;
 
-            updateProgress();
-            window.scrollTo(0, 0);
-        }
-
-        // 응답 저장
-        function saveResponse(questionId, value) {
-            responses[questionId] = value;
-            updateProgress();
-        }
-        function handleChecklist(id, checked) {
-  if (checked) responses[id] = 1;
-  else delete responses[id];
-  updateProgress();
-}
-
-      
-        // 진행률 업데이트
-        function updateProgress() {
-            const totalQuestions = 73;
-            const answeredCount = Object.keys(responses).length;
-            const percentage = Math.round((answeredCount / totalQuestions) * 100);
-            
-            document.getElementById('progressBar').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = 
-                `${percentage}% 완료 (${answeredCount}/${totalQuestions})`;
-        }
-
-        // 이전 섹션
-        function previousSection() {
-            if (currentSection > 0) {
-                currentSection--;
-                renderSection();
-            }
-        }
-
-        // 다음 섹션
-        function nextSection() {
-            const section = sections[currentSection];
-            const unanswered = section.questions.filter(q => responses[q.id] === undefined);
-            
-            if (unanswered.length > 0) {
-                alert(`아직 응답하지 않은 문항이 ${unanswered.length}개 있습니다.\n모든 문항에 응답해주세요.`);
-                return;
-            }
-
-            if (currentSection < sections.length - 1) {
-                currentSection++;
-                renderSection();
+            // 끝났는지 확인
+            if (currentIdx >= questions.length) {
+                finishSurvey();
             } else {
-                completeSurvey();
+                // 다음 질문으로 (섹션이 바뀌면 섹션화면 표시)
+                showSectionIntro();
             }
         }
 
-        // 설문 완료
-        function completeSurvey() {
-            // 점수 계산
-            const scores = calculateScores();
-            
-            document.getElementById('surveyContent').classList.remove('active');
-            document.getElementById('progressSection').classList.remove('active');
-            document.getElementById('navigation').classList.remove('active');
-            document.getElementById('completionScreen').classList.add('active');
-            
-            // 결과 저장
-            window.surveyResults = {
-                personalInfo: personalInfo,
-                responses: responses,
-                scores: scores,
-                metadata: {
-                    timestamp: new Date().toISOString(),
-                    totalQuestions: 73,
-                    completedQuestions: Object.keys(responses).length
-                }
-            };
+        // [기능] 설문 종료
+        function finishSurvey() {
+            questionScreen.classList.add('hidden');
+            finishScreen.classList.remove('hidden');
+            progressBar.style.width = "100%";
         }
 
-        // 점수 계산
-        function calculateScores() {
-            const scores = {
-                areas: {},
-                sleep: { count: 0, items: [], interpretation: '' },
-                somatic: { count: 0, items: [], interpretation: '' },
-                doubleInterpretation: { level: 'none', affectedQuestions: [] }
-            };
-
-            // 영역별 점수 계산
-            const areas = ['앞쪽뇌', '뒤쪽뇌', '우뇌', '좌뇌'];
-            areas.forEach(area => {
-                const areaQuestions = questions.filter(q => q.area === area);
-                let functionScore = 0, costScore = 0, underScore = 0;
-                
-                areaQuestions.forEach(q => {
-                    const response = responses[q.id];
-                    if (response === undefined) return;
-                    
-                    if (q.type === '기능') {
-                        functionScore += q.direction === '정방향' ? response : (6 - response);
-                    } else if (q.type === '비용') {
-                        costScore += q.direction === '역방향' ? response : (6 - response);
-                    } else if (q.type === '저하') {
-                        underScore += q.direction === '역방향' ? response : (6 - response);
-                    } else if (q.type === '이중해석') {
-                        // 이중해석 문항은 일단 기능으로 계산
-                        functionScore += response;
-                    }
-                });
-                
-                scores.areas[area] = {
-                    function: functionScore,
-                    cost: costScore,
-                    under: underScore,
-                    total: functionScore - costScore - underScore
-                };
-            });
-
-            // 수면/신체화 점수 계산
-            questions.forEach(q => {
-                const response = responses[q.id];
-                if (response === undefined || response === 0) return;
-                
-                if (q.area === '수면회복' && response >= 3) {
-                    scores.sleep.count++;
-                    scores.sleep.items.push(q.id);
-                } else if (q.area === '신체화' && response >= 3) {
-                    scores.somatic.count++;
-                    scores.somatic.items.push(q.id);
-                }
-            });
-
-            // 이중해석 로직
-            const doubleInterpQuestions = [20, 21, 26, 33, 34, 35, 36, 37, 41, 73];
-            const extremeResponses = doubleInterpQuestions.filter(qid => {
-                const response = responses[qid];
-                return response === 1 || response === 5;
-            });
-
-            if (scores.sleep.count >= 3 && scores.somatic.count >= 3) {
-                scores.doubleInterpretation.level = 'severe';
-                scores.doubleInterpretation.affectedQuestions = extremeResponses;
-                scores.sleep.interpretation = '정서 과활성 - 불안/과민 상태 (강한 경고)';
-                scores.somatic.interpretation = '정서 과활성 - 불안/과민 상태 (강한 경고)';
-            } else if (scores.sleep.count >= 3 || scores.somatic.count >= 3) {
-                scores.doubleInterpretation.level = 'moderate';
-                scores.doubleInterpretation.affectedQuestions = extremeResponses;
-                if (scores.sleep.count >= 3) {
-                    scores.sleep.interpretation = 'High Beta 과활성 또는 Theta 과잉';
-                }
-                if (scores.somatic.count >= 3) {
-                    scores.somatic.interpretation = 'High Beta 과활성 또는 Theta 과잉';
-                }
-            } else {
-                scores.doubleInterpretation.level = 'none';
-                scores.sleep.interpretation = scores.sleep.count > 0 ? '경미' : '정상';
-                scores.somatic.interpretation = scores.somatic.count > 0 ? '경미' : '정상';
-            }
-
-            return scores;
+        // [기능] 데이터 전송 (나중에 구글 시트 연동 시 수정할 부분)
+        function submitData() {
+            console.log("수집된 데이터:", answers);
+            alert("지금은 데모 버전입니다. 실제로는 이 데이터가 분석 엔진으로 전송됩니다.");
+            // 여기서 window.location.href = "구글폼제출링크..." 등으로 연결 가능
         }
 
-        // 결과 다운로드
-        function downloadResults() {
-            const result = window.surveyResults || {
-                personalInfo: personalInfo,
-                responses: responses,
-                scores: calculateScores(),
-                metadata: {
-                    timestamp: new Date().toISOString(),
-                    totalQuestions: 73,
-                    completedQuestions: Object.keys(responses).length
-                }
-            };
- 
-            const blob = new Blob([JSON.stringify(result, null, 2)], 
-                { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `NCI_응답결과_${personalInfo.name}_${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
     </script>
 </body>
 </html>
