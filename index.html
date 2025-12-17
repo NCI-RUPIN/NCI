@@ -1048,6 +1048,112 @@
         // ============================================
         // 결과 제출
         // ============================================
+        // ============================================
+        // 점수 계산 로직
+        // ============================================
+        function calculateScores() {
+            const analysis = {
+                areas: {},
+                sleep: { count: 0, symptoms: [] },
+                somatic: { count: 0, symptoms: [] },
+                doubleInterpret: {
+                    level: 'none', // none, moderate, severe
+                    affectedQuestions: []
+                }
+            };
+
+            // 1. 수면 점수 계산 (66-69번, 70번은 해당없음)
+            for (let i = 66; i <= 69; i++) {
+                if (responses[i] === true) {
+                    analysis.sleep.count++;
+                    analysis.sleep.symptoms.push(i);
+                }
+            }
+
+            // 2. 신체화 점수 계산 (71-74번, 75번은 해당없음)
+            for (let i = 71; i <= 74; i++) {
+                if (responses[i] === true) {
+                    analysis.somatic.count++;
+                    analysis.somatic.symptoms.push(i);
+                }
+            }
+
+            // 3. 이중해석 레벨 판정
+            const sleepHigh = analysis.sleep.count >= 3;
+            const somaticHigh = analysis.somatic.count >= 3;
+
+            if (sleepHigh && somaticHigh) {
+                analysis.doubleInterpret.level = 'severe'; // 강한 경고
+            } else if (sleepHigh || somaticHigh) {
+                analysis.doubleInterpret.level = 'moderate'; // 약한 주의
+            }
+
+            // 4. 이중해석 대상 문항 추출
+            const doubleInterpretQs = surveyQuestions.filter(q => q.doubleInterpret);
+            doubleInterpretQs.forEach(q => {
+                const score = responses[q.id];
+                if (score === 1 || score === 5) { // 극단 응답
+                    analysis.doubleInterpret.affectedQuestions.push({
+                        id: q.id,
+                        area: q.area,
+                        text: q.text,
+                        score: score,
+                        interpretation: getDoubleInterpretation(q, score, sleepHigh, somaticHigh)
+                    });
+                }
+            });
+
+            // 5. 영역별 점수 계산
+            ['앞쪽뇌', '뒤쪽뇌', '우뇌', '좌뇌'].forEach(area => {
+                const areaQs = surveyQuestions.filter(q => q.area === area);
+                let functionScore = 0;
+                let costScore = 0;
+                let underScore = 0;
+
+                areaQs.forEach(q => {
+                    const score = responses[q.id] || 0;
+                    if (q.type === '기능') {
+                        functionScore += score;
+                    } else if (q.type === '비용') {
+                        costScore += score;
+                    } else if (q.type === '저하') {
+                        underScore += score;
+                    } else if (q.type === '이중해석') {
+                        // 이중해석 문항은 상황에 따라 처리
+                        if (analysis.doubleInterpret.level !== 'none') {
+                            costScore += score; // 과활성으로 간주
+                        } else {
+                            functionScore += score; // 재능으로 간주
+                        }
+                    }
+                });
+
+                analysis.areas[area] = {
+                    function: functionScore,
+                    cost: costScore,
+                    under: underScore,
+                    total: functionScore + costScore + underScore
+                };
+            });
+
+            return analysis;
+        }
+
+        function getDoubleInterpretation(question, score, sleepHigh, somaticHigh) {
+            if (sleepHigh && somaticHigh) {
+                return '정서 과활성 - 불안/과민 상태';
+            } else if (sleepHigh) {
+                return 'High Beta 과활성 또는 Theta 과잉';
+            } else if (somaticHigh && (question.area === '우뇌' || question.area === '뒤쪽뇌')) {
+                return 'High Beta 과활성 또는 Theta 과잉';
+            } else {
+                return score === 5 ? '재능/강점' : '저하';
+            }
+        }
+
+        // ============================================
+        // 설문 제출
+        // ============================================
         function submitSurvey() {
             const submitBtn = document.getElementById('submitBtn');
             const spinner = document.getElementById('submitSpinner');
@@ -1056,9 +1162,13 @@
             submitBtn.textContent = '제출 중...';
             spinner.style.display = 'block';
 
+            // 점수 계산
+            const analysis = calculateScores();
+
             const surveyData = {
                 personalInfo: personalInfo,
                 responses: responses,
+                analysis: analysis,
                 timestamp: new Date().toISOString()
             };
 
@@ -1074,6 +1184,7 @@
                 })
                 .then(() => {
                     console.log('데이터 전송 완료');
+                    console.log('분석 결과:', analysis);
                     spinner.style.display = 'none';
                     submitBtn.textContent = '제출 완료!';
                     submitBtn.style.background = 'var(--success)';
@@ -1094,6 +1205,7 @@
             } else {
                 // URL이 설정되지 않은 경우
                 console.log('Survey Data:', surveyData);
+                console.log('분석 결과:', analysis);
                 setTimeout(() => {
                     spinner.style.display = 'none';
                     submitBtn.textContent = '제출 완료!';
