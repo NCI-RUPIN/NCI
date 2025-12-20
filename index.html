@@ -1064,7 +1064,7 @@
 
             // 1. 수면 점수 계산 (66-69번, 70번은 해당없음)
             for (let i = 66; i <= 69; i++) {
-                if (responses[i] === true) {
+                if (responses[i] !=== undefined) {
                     analysis.sleep.count++;
                     analysis.sleep.symptoms.push(i);
                 }
@@ -1072,7 +1072,7 @@
 
             // 2. 신체화 점수 계산 (71-74번, 75번은 해당없음)
             for (let i = 71; i <= 74; i++) {
-                if (responses[i] === true) {
+                if (responses[i] !=== undefined) {
                     analysis.somatic.count++;
                     analysis.somatic.symptoms.push(i);
                 }
